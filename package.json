@@ -1,0 +1,44 @@
+{
+  "name": "wdio-axe",
+  "version": "1.0.0",
+  "description": "Module to inject and analyze web pages in webdriverio using aXe",
+  "main": "lib/binder.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    {
+      "name": "Tamil Selvan"
+    },
+    {
+      "name": "Prabhu Rajendra"
+    }
+  ],
+  "keywords": [
+    "wdio-axe",
+    "axe",
+    "webdriverio-axe",
+    "accessibility",
+    "wdio",
+    "a11y",
+    "unit",
+    "testing",
+    "tdd",
+    "bdd",
+    "aXe"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "peerDependencies": {
+    "webdriverio": "4.12.0"
+  },
+  "dependencies": {
+    "axe-core": "3.2.2",
+    "array-counter": "1.0.0",
+    "colors": "1.3.3",
+    "lodash": "4.17.11"
+  },
+  "author": "Tamil Selvan",
+  "license": "ISC"
+}
