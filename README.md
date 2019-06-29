@@ -77,3 +77,18 @@ let aXe = require('wdio-axe');
 
 aXe.reset();
 ```
+
+### Analyze With Tag
+
+Here is an example script to run axe with custom tag.
+
+```javascript
+let aXe = require('wdio-axe');
+
+let result = aXe.analyseWithTag(["best-practice"]);
+console.log(result);
+```
+
+License
+----
+ISC
