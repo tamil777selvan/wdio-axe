@@ -89,6 +89,16 @@ let result = aXe.analyseWithTag(["best-practice"]);
 console.log(result);
 ```
 
+### Analyze With Context
+
+Here is an example script to run axe with context enabled.
+
+```javascript
+let aXe = require('wdio-axe');
+
+aXe.analyseWithContext([{include: [['#iframe']]}]);
+```
+
 License
 ----
 ISC
