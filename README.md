@@ -1,18 +1,27 @@
 # wdio-axe
-Provides sync bindings for axe with webdriverio
+`aXe` is the accessibility engine for automated testing of HTML-based
+user interfaces. These hints run the recommended set of WCAG 2.1
+Level A and Level AA rules from [axe-core](https://github.com/dequelabs/axe-core/).
 
+This module uses axe-core API to inject, configure and analyze web pages rendered by wdio by providing sync bindings.
 
-## Getting Started
+## What does the wdio-axe check?
 
-Install [Node.js](https://docs.npmjs.com/getting-started/installing-node) if you haven't already. 
+By default, `wdio-axe` runs against all the
+[WCAG 2.1](https://www.w3.org/TR/WCAG21/) Level A and Level AA rules included in
+[axe-core](https://github.com/dequelabs/axe-core/) with `document` as the target. 
 
-Install axe-wdio and its dependencies: `npm i wdio-axe`
+These rules are grouped based on their assigned category within `axe-core`.
 
-## Usage
+## Getting started
 
-This module uses a axe-core API to inject, configure and analyze web pages rendered by wdio.
+First download the package:
 
-## Example
+```console
+npm install wdio-axe --save-dev
+```
+
+## Implementations
 
 ### Get Violations
 Here is an example script returns violations with tags "wcag2a", "wcag2aa"
@@ -98,6 +107,12 @@ let aXe = require('wdio-axe');
 
 aXe.analyseWithContext([{include: [['#iframe']]}]);
 ```
+
+## Further Reading
+
+* [Deque University](https://dequeuniversity.com/)
+* [Axe Rules](https://dequeuniversity.com/rules/axe/3.3)
+* [Web Accessibility Initiative (WAI)](https://www.w3.org/WAI/)
 
 License
 ----
