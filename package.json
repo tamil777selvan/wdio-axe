@@ -1,6 +1,6 @@
 {
   "name": "wdio-axe",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Module to inject and analyze web pages in webdriverio using aXe",
   "main": "lib/binder.js",
   "contributors": [
