@@ -12,7 +12,7 @@ class axeConfig {
             returnObject.pageTitle = browser.getTitle();
             browser.execute(axeSource);
             let result = browser.executeAsync(function (done) {
-                axe.run({runOnly: {type: 'tags', values: ["wcag2a", "wcag2aa"]}}, function (err, result) {
+                axe.run({runOnly: {type: 'tags', values: ['wcag2a', 'wcag2aa']}}, function (err, result) {
                     if (err) done(err);
                     done(result);
                 });
@@ -29,11 +29,11 @@ class axeConfig {
                                 resultAxeObject.impact = (value1.any[0]).impact;
                                 resultAxeObject.message = (value1.any[0]).message;
                             } catch (e) {
-
+                                
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -58,7 +58,7 @@ class axeConfig {
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -86,7 +86,7 @@ class axeConfig {
             returnObject.pageTitle = browser.getTitle();
             browser.execute(axeSource);
             let result = browser.executeAsync(function (done) {
-                axe.run({runOnly: {type: 'tags', values: ["best-practice"]}}, function (err, result) {
+                axe.run({runOnly: {type: 'tags', values: ['best-practice']}}, function (err, result) {
                     if (err) done(err);
                     done(result);
                 });
@@ -101,7 +101,7 @@ class axeConfig {
                             resultAxeObject.id = value.id;
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -120,7 +120,7 @@ class axeConfig {
                             resultAxeObject.id = value.id;
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -177,7 +177,7 @@ class axeConfig {
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -202,7 +202,7 @@ class axeConfig {
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -265,7 +265,7 @@ class axeConfig {
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
@@ -290,7 +290,7 @@ class axeConfig {
                             }
                             resultAxeObject.failureSummary = value1.failureSummary;
                             resultAxeObject.html = value1.html;
-                            resultAxeObject.target = value1.target;
+                            resultAxeObject.target = JSON.stringify(value1.target);
                             resultAxeArray.push(resultAxeObject);
                         });
                     });
