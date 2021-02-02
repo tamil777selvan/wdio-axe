@@ -1,6 +1,6 @@
 {
   "name": "wdio-axe",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Module to inject and analyze web pages in webdriverio using aXe",
   "main": "lib/index.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "node": ">=6"
   },
   "dependencies": {
-    "axe-core": "3.5.5",
+    "axe-core": "4.1.1",
     "@babel/core": "^7.6.2",
     "babel-plugin-transform-function-bind": "^6.22.0"
   },
