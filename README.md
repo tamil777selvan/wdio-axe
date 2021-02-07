@@ -105,7 +105,8 @@ Here is an example script to run axe with context enabled.
 ```javascript
 let aXe = require('wdio-axe');
 
-aXe.analyseWithContext([{include: [['#iframe']]}]);
+let result = aXe.analyseWithContext([{include: [['#iframe']]}]);
+console.log(result);
 ```
 
 ## Further Reading
@@ -113,7 +114,3 @@ aXe.analyseWithContext([{include: [['#iframe']]}]);
 * [Deque University](https://dequeuniversity.com/)
 * [Axe Rules](https://dequeuniversity.com/rules/axe/3.3)
 * [Web Accessibility Initiative (WAI)](https://www.w3.org/WAI/)
-
-License
-----
-ISC

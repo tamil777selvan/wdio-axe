@@ -1,30 +1,60 @@
 {
-    "env": {
-      "es6": true
-    },
-    "globals": {
-      "browser": true
-    },
-    "root": true,
-    "parserOptions": {
-      "ecmaVersion": 2017,
-      "sourceType": "module"
-    },
-    "rules": {
-      "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false}],
-      "one-var-declaration-per-line": ["error", "initializations"],
-      "no-console": 2,
-      "quotes": ["error", "single"],
-      "no-var": 2,
-      "no-inner-declarations": 2,
-      "no-duplicate-case": 2,
-      "no-unreachable": 2,
-      "no-redeclare": 2,
-      "no-useless-return": 2,
-      "global-require": 2,
-      "indent": ["error", 4],
-      "semi": ["error", "always"],
-      "space-before-blocks": "error",
-      "comma-spacing": ["error", { "before": false, "after": true }]
-    }
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "airbnb-base",
+  "globals": {
+    "browser": true
+  },
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2021
+  },
+  "rules": {
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "global-require": "off",
+    "indent": [
+      "error",
+      4
+    ],
+    "no-mixed-operators": "off",
+    "no-new": "off",
+    "no-plusplus": "off",
+    "no-restricted-syntax": "off",
+    "no-return-assign": ["error", "except-parens"],
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": true
+      }
+    ],
+    "object-curly-spacing": [
+      "error",
+      "never"
+    ],
+    "func-names": [
+      "error",
+      "as-needed"
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "no-prototype-builtins": "off",
+    "space-before-function-paren": ["error", "never"],
+    "class-methods-use-this": "off",
+    "guard-for-in": "off",
+    "no-console": "error",
+    "no-await-in-loop": "off",
+    "no-restricted-globals": "off",
+    "array-callback-return": "off",
+    "no-return-await": "off"
   }
+}

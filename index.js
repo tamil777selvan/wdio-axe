@@ -1,363 +1,135 @@
 const axeSource = require('axe-core').source;
 const axe = require('axe-core');
+const _ = require('lodash');
 
-class axeConfig {
+const defaultErrorMessage = 'wdio-axe encountered an error. Check the config and try to re run again.';
+
+class wdioAxe {
+    parseResult(axeResults, pageUrl, pageTitle, calledMethod = '') {
+        if (_.has(axeResults, 'violations') && axeResults.violations.length > 0) {
+            axeResults.violations.map((violation) => {
+                delete violation.tags;
+                violation.nodes.map((nodeData) => {
+                    delete nodeData.all;
+                    delete nodeData.none;
+                    if (calledMethod !== 'getBestPractice' && calledMethod !== 'analyseWithTag') {
+                        violation.message = nodeData.any[0].message;
+                    }
+                    violation.html = nodeData.html;
+                    violation.target = JSON.stringify(nodeData.target);
+                });
+                delete violation.nodes;
+                violation.pageUrl = pageUrl;
+                violation.pageTitle = pageTitle;
+            });
+            return axeResults.violations;
+        }
+        if (calledMethod === 'getViolations' || calledMethod === 'analyseWithTag'
+                || calledMethod === 'analyseWithContext') {
+            return `No Violations found in this page "${pageUrl}"`;
+        } if (calledMethod === 'getBestPractice') {
+            return `Page ("${pageUrl}") is aligned with best practice standards.`;
+        }
+        return '';
+    }
 
     getViolations() {
         try {
-            let resultAxeArray = [];
-            let resultAxeObject = {};
-            let returnObject = {};
-            returnObject.pageUrl = browser.getUrl();
-            returnObject.pageTitle = browser.getTitle();
             browser.execute(axeSource);
-            let result = browser.executeAsync(function (done) {
-                axe.run({runOnly: {type: 'tags', values: ['wcag2a', 'wcag2aa']}}, function (err, result) {
-                    if (err) done(err);
-                    done(result);
-                });
-            });
-            try {
-                if (result.violations.length > 0) {
-                    result.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-                                
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            } catch (e) {
-                if (result.value.violations.length > 0) {
-                    result.value.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.value.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            }
-            returnObject.violations = resultAxeArray;
-            return returnObject;
+            const pageUrl = browser.getUrl();
+            const pageTitle = browser.getTitle();
+            const axeResults = browser.execute(async() => await axe.run({runOnly: {type: 'tags', values: ['wcag2a', 'wcag2aa']}}));
+            return this.parseResult(axeResults, pageUrl, pageTitle, 'getViolations');
         } catch (e) {
-            throw new Error(
-                'wdio-axe encountered an error. Check the config and try to re run again.'
-            );
+            throw new Error(defaultErrorMessage);
         }
     }
 
     getBestPractice() {
         try {
-            let resultAxeArray = [];
-            let resultAxeObject = {};
-            let returnObject = {};
-            returnObject.pageUrl = browser.getUrl();
-            returnObject.pageTitle = browser.getTitle();
             browser.execute(axeSource);
-            let result = browser.executeAsync(function (done) {
-                axe.run({runOnly: {type: 'tags', values: ['best-practice']}}, function (err, result) {
-                    if (err) done(err);
-                    done(result);
-                });
-            });
-            try {
-                if (result.violations.length > 0) {
-                    result.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.violations.length === 0) {
-                    resultAxeObject.result = 'Page is aligned with the standards';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            } catch (e) {
-                if (result.value.violations.length > 0) {
-                    result.value.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.value.violations.length === 0) {
-                    resultAxeObject.result = 'Page is aligned with the standards';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            }
-            returnObject.bestPractice = resultAxeArray;
-            return returnObject;
+            const pageUrl = browser.getUrl();
+            const pageTitle = browser.getTitle();
+            const axeResults = browser.execute(async() => await axe.run({runOnly: {type: 'tags', values: ['best-practice']}}));
+            return this.parseResult(axeResults, pageUrl, pageTitle, 'getBestPractice');
         } catch (e) {
-            throw new Error(
-                'wdio-axe encountered an error. Check the config and try to re run again.'
-            );
+            throw new Error(defaultErrorMessage);
         }
     }
 
-    analyseWithTag(tagArray) {
-        let response = true;
+    analyseWithTag(tags) {
+        if (!Array.isArray(tags)) {
+            throw new Error('wdio-axe\'s analyseWithTag function require input tags as Array.');
+        }
         try {
-            if (typeof tagArray !== 'object') {
-                response = false;
-                throw new Error(
-                    'wdio-axe needs input tags as Array.'
-                );
-            }
-            let runOnlyConfig = {runOnly: {type: 'tags', values: tagArray}};
-            let resultAxeArray = [];
-            let resultAxeObject = {};
-            let returnObject = {};
-            returnObject.pageUrl = browser.getUrl();
-            returnObject.pageTitle = browser.getTitle();
+            const runOnly = {runOnly: {type: 'tags', values: tags}};
             browser.execute(axeSource);
-            let result = browser.executeAsync(function (runOnlyConfig, done) {
-                axe.run(runOnlyConfig, function (err, result) {
-                    if (err) done(err);
-                    done(result);
-                });
-            }, runOnlyConfig);
-            try {
-                if (result.violations.length > 0) {
-                    result.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            } catch (e) {
-                if (result.value.violations.length > 0) {
-                    result.value.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.value.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            }
-            returnObject.result = resultAxeArray;
-            return returnObject;
+            const pageUrl = browser.getUrl();
+            const pageTitle = browser.getTitle();
+            const axeResults = browser.executeAsync((runOnlyConfig, done) => {
+                axe.run(runOnlyConfig, ((error, results) => {
+                    if (error) done(error);
+                    done(results);
+                }));
+            }, runOnly);
+            return this.parseResult(axeResults, pageUrl, pageTitle, 'analyseWithTag');
         } catch (e) {
-            if (!response) {
-                throw new Error(
-                    'wdio-axe needs input tags as Array.'
-                );
-            } else {
-                throw new Error(
-                    'wdio-axe encountered an error. Check the config and try to re run again.'
-                );
-            }
+            throw new Error(defaultErrorMessage);
         }
     }
 
-    analyseWithContext(contextArray) {
-        let response = true;
+    analyseWithContext(context) {
+        if (!Array.isArray(context)) {
+            throw new Error('wdio-axe\'s analyseWithContext function require input context as Array.');
+        }
         try {
-            if (typeof contextArray !== 'object') {
-                response = false;
-                throw new Error(
-                    'wdio-axe needs input tags as Array.'
-                );
-            }
-            let runOnlyConfig = contextArray[0];
-            let resultAxeArray = [];
-            let resultAxeObject = {};
-            let returnObject = {};
-            returnObject.pageUrl = browser.getUrl();
-            returnObject.pageTitle = browser.getTitle();
+            const runOnly = context[0];
             browser.execute(axeSource);
-            let result = browser.executeAsync(function (runOnlyConfig, done) {
-                axe.run(runOnlyConfig, function (err, result) {
-                    if (err) done(err);
-                    done(result);
-                });
-            }, runOnlyConfig);
-            try {
-                if (result.violations.length > 0) {
-                    result.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            } catch (e) {
-                if (result.value.violations.length > 0) {
-                    result.value.violations.forEach(value => {
-                        value.nodes.forEach(value1 => {
-                            resultAxeObject.description = value.description;
-                            resultAxeObject.help = value.help;
-                            resultAxeObject.helpUrl = value.helpUrl;
-                            resultAxeObject.id = value.id;
-                            try {
-                                resultAxeObject.impact = (value1.any[0]).impact;
-                                resultAxeObject.message = (value1.any[0]).message;
-                            } catch (e) {
-
-                            }
-                            resultAxeObject.failureSummary = value1.failureSummary;
-                            resultAxeObject.html = value1.html;
-                            resultAxeObject.target = JSON.stringify(value1.target);
-                            resultAxeArray.push(resultAxeObject);
-                        });
-                    });
-                }
-                if (result.value.violations.length === 0) {
-                    resultAxeObject.result = 'No Violations found in this page';
-                    resultAxeArray.push(resultAxeObject);
-                }
-            }
-            returnObject.result = resultAxeArray;
-            return returnObject;
+            const pageUrl = browser.getUrl();
+            const pageTitle = browser.getTitle();
+            const axeResults = browser.executeAsync((runOnlyConfig, done) => {
+                axe.run(runOnlyConfig, ((error, results) => {
+                    if (error) done(error);
+                    done(results);
+                }));
+            }, runOnly);
+            return this.parseResult(axeResults, pageUrl, pageTitle, 'analyseWithContext');
         } catch (e) {
-            if (!response) {
-                throw new Error(
-                    'wdio-axe needs input tags as Array.'
-                );
-            } else {
-                throw new Error(
-                    'wdio-axe encountered an error. Check the config and try to re run again.'
-                );
-            }
+            throw new Error(defaultErrorMessage);
         }
     }
 
-    getRules(tags) {
+    getRules(tags = []) {
+        if (!Array.isArray(tags)) {
+            throw new Error('wdio-axe\'s getRules function require input tags as Array.');
+        }
         try {
-            if (tags) {
-                browser.execute(axeSource);
-                return axe.getRules(tags);
-            } else {
-                browser.execute(axeSource);
-                return axe.getRules();
-            }
+            browser.execute(axeSource);
+            return axe.getRules(tags);
         } catch (e) {
-            throw new Error(
-                'wdio-axe encountered an error. Check the config and try to re run again.'
-            );
+            throw new Error(defaultErrorMessage);
         }
     }
 
     runConfig(config) {
+        if (Array.isArray(config) && (typeof config) === 'object') {
+            throw new Error('wdio-axe\'s runConfig function require input config as Object.');
+        }
         try {
-            browser.execute(axeSource);
-            if (typeof config !== 'object') {
-                throw new Error(
-                    'wdio-axe needs an object to configure. See axe-core configure API.'
-                );
-            }
-            axe.configure(config);
+            return axe.configure(config);
         } catch (e) {
-            throw new Error(
-                'wdio-axe encountered an error. Check the config and try to re run again.'
-            );
+            throw new Error(defaultErrorMessage);
         }
     }
 
     reset() {
         try {
             browser.execute(axeSource);
-            axe.reset();
+            return axe.reset();
         } catch (e) {
-            throw new Error(
-                'wdio-axe encountered an error. Check the config and try to re run again.'
-            );
+            throw new Error(defaultErrorMessage);
         }
     }
-
 }
-
-module.exports = new axeConfig();
+// eslint-disable-next-line new-cap
+module.exports = new wdioAxe();
