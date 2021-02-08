@@ -2,53 +2,25 @@
   "name": "wdio-axe",
   "version": "2.2.1",
   "description": "Module to inject and analyze web pages in webdriverio using aXe",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "babel index.js -d lib",
-    "start": "npm run build && node lib/index.js",
-    "lint": "eslint index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tamil777selvan/wdio-axe.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tamil777selvan/wdio-axe/issues"
-  },
-  "homepage": "https://github.com/tamil777selvan/wdio-axe#readme",
-  "contributors": [
-    {
-      "name": "Tamil Selvan"
-    },
-    {
-      "name": "Prabhu Rajendra"
-    }
-  ],
-  "keywords": [
-    "wdio-axe",
-    "axe",
-    "webdriverio-axe",
-    "accessibility",
-    "wdio",
-    "a11y",
-    "unit",
-    "testing",
-    "tdd",
-    "bdd",
-    "aXe",
-    "wdio axe",
-    "axe wdio"
-  ],
-  "engines": {
-    "node": ">=6"
+    "lint": "eslint \"**/*.js\" --ignore-path .gitignore --max-warnings 0",
+    "test": "wdio run wdio.conf.js"
   },
   "dependencies": {
-    "axe-core": "4.1.1",
-    "@babel/core": "^7.6.2",
-    "babel-plugin-transform-function-bind": "^6.22.0"
+    "axe-core": "^4.1.1",
+    "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.6.2"
-  },
-  "license": "ISC"
+    "@wdio/cli": "^6.12.1",
+    "@wdio/local-runner": "^6.12.1",
+    "@wdio/mocha-framework": "^6.11.0",
+    "@wdio/selenium-standalone-service": "^6.12.1",
+    "@wdio/spec-reporter": "^6.11.0",
+    "@wdio/sync": "^6.11.0",
+    "chai": "^4.3.0",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  }
 }
