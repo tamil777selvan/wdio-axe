@@ -1,6 +1,6 @@
 {
   "name": "wdio-axe",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Module to inject and analyze web pages in webdriverio using aXe",
   "main": "index.js",
   "scripts": {
