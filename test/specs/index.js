@@ -627,6 +627,7 @@ describe('wdio-axe', () => {
     it('getViolations - should return array if violations is present', () => {
         browser.url('https://the-internet.herokuapp.com/login');
         const violations = axe.getViolations();
+        console.log(violations);
         expect(violations).to.be.an('array');
         expect(violations).to.deep.equal(violationResult);
     });
