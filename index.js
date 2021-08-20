@@ -13,7 +13,11 @@ class wdioAxe {
                     delete nodeData.all;
                     delete nodeData.none;
                     if (calledMethod !== 'getBestPractice' && calledMethod !== 'analyseWithTag') {
-                        violation.message = nodeData.any[0].message;
+                        if (nodeData.any.length > 0) {
+                            violation.message = nodeData.any[0].message;
+                        } else {
+                            violation.message = nodeData.failureSummary;
+                        }
                     }
                     violation.html = nodeData.html;
                     violation.target = JSON.stringify(nodeData.target);
