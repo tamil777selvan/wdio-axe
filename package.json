@@ -7,23 +7,23 @@
     "lint": "eslint \"**/*.js\" --ignore-path .gitignore --max-warnings 0",
     "test": "wdio run wdio.conf.js"
   },
-  "homepage": "https://github.com/tamil777selvan/wdio-axe#readme", 
+  "homepage": "https://github.com/tamil777selvan/wdio-axe#readme",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/tamil777selvan/wdio-axe"
+    "type": "git",
+    "url": "https://github.com/tamil777selvan/wdio-axe"
   },
   "keywords": [
-      "accessibility",
-      "automated accessibility test",
-      "accessibility automation",
-      "Webdriver",
-      "WebdriverIO",
-      "axe",
-      "wdio-axe"
+    "accessibility",
+    "automated accessibility test",
+    "accessibility automation",
+    "Webdriver",
+    "WebdriverIO",
+    "axe",
+    "wdio-axe"
   ],
   "dependencies": {
-    "axe-core": "^4.1.1",
-    "lodash": "^4.17.20"
+    "axe-core": "^4.3.2",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@wdio/cli": "^6.12.1",
